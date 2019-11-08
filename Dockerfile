@@ -1,13 +1,11 @@
-FROM tomcat:8.5
+FROM openjdk:8-jdk-slim
 
-# add authentication credentials to Tomcat for Fcrepo
-# remove the closing tag, then use the echo|tee pattern to build it back in
-RUN sed -i 's|</tomcat-users>| |' $CATALINA_HOME/conf/tomcat-users.xml
-RUN echo "<role rolename=\"fedoraAdmin\" />" | tee -a $CATALINA_HOME/conf/tomcat-users.xml \
-    && echo "<user username=\"${FCREPO_ADMIN_USER:-fedoraAdmin}\" password=\"${FCREPO_ADMIN_PASSWORD:-fedoraAdmin}\" roles=\"fedoraAdmin\"/>" | tee -a $CATALINA_HOME/conf/tomcat-users.xml \
-    && echo "</tomcat-users>" | tee -a $CATALINA_HOME/conf/tomcat-users.xml
+ENV CATALINA_HOME=/home/fedora-3.1/tomcat
+ENV FEDORA_HOME=/home/fedora-3.1
     
-# Install Fedora with OAI-Provider
-ADD ./fcrepo.war ${CATALINA_HOME}/webapps/fcrepo.war
+# Add Fedora 3.1
+ADD ./fedora-3.1.tar.gz /home
 
-EXPOSE 8080 51516 51513
+EXPOSE 8080 61616
+
+CMD ${CATALINA_HOME}/bin/catalina.sh run
