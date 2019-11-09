@@ -1,0 +1,33 @@
+version: '3'
+
+volumes:
+  mysql:
+    driver: local
+  fedora:
+    driver: local
+
+services:
+  mysql:
+    restart: always
+    image: mysql:5.7
+    env_file: .env_fedora
+    command: --init-file /data/application/init.sql
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./init.sql:/data/application/init.sql
+    ports:
+      - "3306:3306"
+
+  fedora:
+    restart: always
+    image: pcharoen/fedora:3.1
+    depends_on: 
+      - mysql
+    volumes:
+      - fedora:/home/fedora-3.1
+      - /Users/pcharoen/Downloads/data:/home/fedora-3.1/data
+    env_file:
+      - .env_fedora
+    ports:
+      - "8080:8080"
+      - "61616:61616"
