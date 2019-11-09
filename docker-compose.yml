@@ -25,7 +25,7 @@ services:
       - mysql
     volumes:
       - fedora:/home/fedora-3.1
-      - /Users/pcharoen/Downloads/data:/home/fedora-3.1/data
+      - ./data:/home/fedora-3.1/data
     env_file:
       - .env_fedora
     ports:
