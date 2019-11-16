@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-stretch
+FROM openjdk:6-jdk
 
 ENV CATALINA_HOME=/home/fedora-3.1/tomcat
 ENV FEDORA_HOME=/home/fedora-3.1
