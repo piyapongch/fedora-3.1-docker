@@ -47,7 +47,8 @@ Rebuilding MySQL database from existing Fedora data
 - Modify Fedora data directory in docker-compose.yml pointing to Fedora data on local machine
 - Run fedora-rebuild.sh then select option 2 and confirm
 ```shell
-$ cd fedora-3.1/server/bin
+$ docker exec -it fedora31 /bin/bash
+$ cd /home/fedora-3.1/server/bin
 $ export FEDORA_HOME=../../
 $ ./fedora-rebuild.sh
 ```
