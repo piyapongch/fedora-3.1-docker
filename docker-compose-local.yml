@@ -14,7 +14,7 @@ services:
   mysql:
     restart: always
     image: mysql:5.7
-    container_name: mysql
+    container_name: mysql_1
     env_file: .env_fedora
     command: --init-file /data/application/init.sql
     volumes:
@@ -26,7 +26,7 @@ services:
   fedora:
     restart: always
     image: pcharoen/fedora:3.1
-    container_name: fedora31
+    container_name: fedora31_1
     env_file:
       - .env_fedora
     depends_on: 
