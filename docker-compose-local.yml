@@ -9,6 +9,10 @@ volumes:
     driver: local
   fedora2:
     driver: local
+  mysql3:
+    driver: local
+  fedora3:
+    driver: local
 
 services:
   mysql:
@@ -68,3 +72,32 @@ services:
     ports:
       - "8081:8080"
       - "61617:61616"
+
+  mysql3:
+    restart: always
+    image: mysql:5.7
+    container_name: mysql_3
+    env_file: .env_fedora
+    command: --init-file /data/application/init.sql
+    volumes:
+      - mysql3:/var/lib/mysql
+      - ./init.sql:/data/application/init.sql
+    ports:
+      - "3308:3306"
+
+  fedora3:
+    restart: always
+    image: pcharoen/fedora:3.1
+    container_name: fedora31_3
+    env_file:
+      - .env_fedora
+    depends_on: 
+      - mysql3
+    command: bin/wait-for-it.sh -t 0 mysql2:3308 -- tomcat/bin/catalina.sh run
+    volumes:
+      - fedora3:/home/fedora-3.1
+      - /media/scratch/openstack_data:/home/fedora-3.1/data
+      - ./wait-for-it.sh:/home/fedora-3.1/bin/wait-for-it.sh
+    ports:
+      - "8082:8080"
+      - "61618:61616"
