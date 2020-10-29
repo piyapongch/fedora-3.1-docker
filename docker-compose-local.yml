@@ -96,7 +96,7 @@ services:
     command: bin/wait-for-it.sh -t 0 mysql2:3308 -- tomcat/bin/catalina.sh run
     volumes:
       - fedora3:/home/fedora-3.1
-      - /media/scratch/openstack_data:/home/fedora-3.1/data
+      - /media/scratch/openstack-swift:/home/fedora-3.1/data
       - ./wait-for-it.sh:/home/fedora-3.1/bin/wait-for-it.sh
     ports:
       - "8082:8080"
