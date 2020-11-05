@@ -53,7 +53,7 @@ services:
     env_file: .env_fedora
     command: --init-file /data/application/init.sql
     volumes:
-      - mysql:/var/lib/mysql
+      - mysql2:/var/lib/mysql
       - ./init.sql:/data/application/init.sql
     ports:
       - "3307:3306"
@@ -67,10 +67,10 @@ services:
     environment:
       - MYSQL_SERVER=mysql2:3306
     depends_on: 
-      - mysql
+      - mysql2
     command: bin/wait-for-it.sh -t 0 mysql2:3306 -- tomcat/bin/catalina.sh run
     volumes:
-      - fedora:/home/fedora-3.1
+      - fedora2:/home/fedora-3.1
       - /media/scratch/wolves_era_complete:/home/fedora-3.1/data
       - ./wait-for-it.sh:/home/fedora-3.1/bin/wait-for-it.sh
     ports:
@@ -84,7 +84,7 @@ services:
     env_file: .env_fedora
     command: --init-file /data/application/init.sql
     volumes:
-      - mysql:/var/lib/mysql
+      - mysql3:/var/lib/mysql
       - ./init.sql:/data/application/init.sql
     ports:
       - "3308:3306"
@@ -98,10 +98,10 @@ services:
     environment:
       - MYSQL_SERVER=mysql3:3306
     depends_on: 
-      - mysql
+      - mysql3
     command: bin/wait-for-it.sh -t 0 mysql3:3306 -- tomcat/bin/catalina.sh run
     volumes:
-      - fedora:/home/fedora-3.1
+      - fedora3:/home/fedora-3.1
       - /media/scratch/openstack-swift/era:/home/fedora-3.1/data
       - ./wait-for-it.sh:/home/fedora-3.1/bin/wait-for-it.sh
     ports:
