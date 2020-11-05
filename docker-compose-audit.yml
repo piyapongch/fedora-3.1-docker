@@ -1,0 +1,109 @@
+version: '3'
+
+volumes:
+  mysql:
+    driver: local
+  fedora:
+    driver: local
+  mysql2:
+    driver: local
+  fedora2:
+    driver: local
+  mysql3:
+    driver: local
+  fedora3:
+    driver: local
+
+services:
+  mysql:
+    restart: always
+    image: mysql:5.7
+    container_name: mysql
+    env_file: .env_fedora
+    command: --init-file /data/application/init.sql
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./init.sql:/data/application/init.sql
+    ports:
+      - "3306:3306"
+
+  fedora:
+    restart: always
+    image: pcharoen/fedora:3.1
+    container_name: fedora31
+    env_file:
+      - .env_fedora
+    environment:
+      - MYSQL_SERVER=mysql:3306
+    depends_on: 
+      - mysql
+    command: bin/wait-for-it.sh -t 0 mysql:3306 -- tomcat/bin/catalina.sh run
+    volumes:
+      - fedora:/home/fedora-3.1
+      - /media/scratch/wolves_data/data:/home/fedora-3.1/data
+      - ./wait-for-it.sh:/home/fedora-3.1/bin/wait-for-it.sh
+    ports:
+      - "8080:8080"
+      - "61616:61616"
+
+  mysql2:
+    restart: always
+    image: mysql:5.7
+    container_name: mysql_2
+    env_file: .env_fedora
+    command: --init-file /data/application/init.sql
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./init.sql:/data/application/init.sql
+    ports:
+      - "3307:3306"
+
+  fedora2:
+    restart: always
+    image: pcharoen/fedora:3.1
+    container_name: fedora31_2
+    env_file:
+      - .env_fedora
+    environment:
+      - MYSQL_SERVER=mysql2:3306
+    depends_on: 
+      - mysql
+    command: bin/wait-for-it.sh -t 0 mysql2:3306 -- tomcat/bin/catalina.sh run
+    volumes:
+      - fedora:/home/fedora-3.1
+      - /media/scratch/wolves_era_complete:/home/fedora-3.1/data
+      - ./wait-for-it.sh:/home/fedora-3.1/bin/wait-for-it.sh
+    ports:
+      - "8081:8080"
+      - "61617:61616"
+  
+  mysql3:
+    restart: always
+    image: mysql:5.7
+    container_name: mysql_3
+    env_file: .env_fedora
+    command: --init-file /data/application/init.sql
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./init.sql:/data/application/init.sql
+    ports:
+      - "3308:3306"
+
+  fedora3:
+    restart: always
+    image: pcharoen/fedora:3.1
+    container_name: fedora31_3
+    env_file:
+      - .env_fedora
+    environment:
+      - MYSQL_SERVER=mysql3:3306
+    depends_on: 
+      - mysql
+    command: bin/wait-for-it.sh -t 0 mysql3:3306 -- tomcat/bin/catalina.sh run
+    volumes:
+      - fedora:/home/fedora-3.1
+      - /media/scratch/openstack-swift/era:/home/fedora-3.1/data
+      - ./wait-for-it.sh:/home/fedora-3.1/bin/wait-for-it.sh
+    ports:
+      - "8082:8080"
+      - "61618:61616"
